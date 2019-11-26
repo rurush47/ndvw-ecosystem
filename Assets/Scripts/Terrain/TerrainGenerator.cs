@@ -67,14 +67,20 @@ namespace TerrainGeneration {
                 terrainData = Generate ();
             } else {
                 if (!Application.isPlaying) {
-                    UpdateColours ();
+                    UpdateColours();
                 }
             }
         }
 
+        private void Start()
+        {
+            terrainData = Generate();
+            FindObjectOfType<ObjectSpawner>().SpawnObjects(GetAllTileData());
+        }
+
         public TileData GetTileDataAt(int x, int y)
         {
-            if (InGrid(x, y))
+            if (!InGrid(x, y))
             {
                 return null;
             }
@@ -90,8 +96,8 @@ namespace TerrainGeneration {
 
         bool InGrid(int x, int y)
         {
-            return x < 0 || x >= Mathf.CeilToInt(worldSize) ||
-                   y < 0 || y >= Mathf.CeilToInt(worldSize);
+            return x >= 0 && x < Mathf.CeilToInt(worldSize) &&
+                   y >= 0 && y < Mathf.CeilToInt(worldSize);
         }
 
         public List<TileData> GetAllTileData()
