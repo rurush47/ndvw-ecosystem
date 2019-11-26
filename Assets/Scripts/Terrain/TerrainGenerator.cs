@@ -1,7 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace TerrainGeneration {
+
+    [Serializable]
+    public class TileData
+    {
+        public TerrainGenerator.Biome biome;
+        public Vector3 worldPos;
+    }
+    
     [ExecuteInEditMode]
     public class TerrainGenerator : MonoBehaviour {
 
@@ -37,10 +46,25 @@ namespace TerrainGeneration {
         Color[] startCols;
         Color[] endCols;
 
+        [Header("Test")] 
+        public int xd;
+        public int yd;
+        
+        float[,] map;
+        private TerrainData terrainData;
+         
         void Update () {
+//            if (Input.GetKeyDown("n"))
+//            {
+//                foreach (var tileData in GetAllTileData())
+//                {
+//                    Instantiate(new GameObject(), tileData.worldPos, Quaternion.identity);    
+//                }
+//            }
+            
             if (needsUpdate && autoUpdate) {
                 needsUpdate = false;
-                Generate ();
+                terrainData = Generate ();
             } else {
                 if (!Application.isPlaying) {
                     UpdateColours ();
@@ -48,6 +72,43 @@ namespace TerrainGeneration {
             }
         }
 
+        public TileData GetTileDataAt(int x, int y)
+        {
+            if (InGrid(x, y))
+            {
+                return null;
+            }
+
+            TileData td = new TileData()
+            {
+                biome = GetBiomeAt(x, y),
+                worldPos = terrainData.tileCentres[x, y]
+            };
+
+            return td;
+        }
+
+        bool InGrid(int x, int y)
+        {
+            return x < 0 || x >= Mathf.CeilToInt(worldSize) ||
+                   y < 0 || y >= Mathf.CeilToInt(worldSize);
+        }
+
+        public List<TileData> GetAllTileData()
+        {
+            List<TileData> tileDataSet = new List<TileData>();
+            
+            for (int i = 0; i < worldSize; i++)
+            {
+                for (int j = 0; j < worldSize; j++)
+                {
+                    tileDataSet.Add(GetTileDataAt(i, j));
+                }    
+            }
+
+            return tileDataSet;
+        }
+        
         public TerrainData Generate () {
             //Init colors
             colors.Clear();
@@ -58,7 +119,7 @@ namespace TerrainGeneration {
 
             int numTilesPerLine = Mathf.CeilToInt (worldSize);
             float min = (centralize) ? -numTilesPerLine / 2f : 0;
-            float[, ] map = HeightmapGenerator.GenerateHeightmap (terrainNoise, numTilesPerLine);
+            map = HeightmapGenerator.GenerateHeightmap (terrainNoise, numTilesPerLine);
 
             var vertices = new List<Vector3> ();
             var triangles = new List<int> ();
@@ -202,6 +263,33 @@ namespace TerrainGeneration {
             return uv;
         }
 
+        
+        Biome GetBiomeAt(int x, int y)
+        {
+            if (!InGrid(x, y))
+            {
+                return null;
+            }
+
+            Biome[] globalBiomes = new Biome[] { water, sand, grass };
+            return GetBiome(map[x, y], globalBiomes);
+        }
+
+        Biome GetBiome(float height, Biome[] biomes)
+        {
+            int biomeIndex = 0;
+            float biomeStartHeight = 0;
+            for (int i = 0; i < biomes.Length; i++) {
+                if (height <= biomes[i].height) {
+                    biomeIndex = i;
+                    break;
+                }
+                biomeStartHeight = biomes[i].height;
+            }
+
+            return biomes[biomeIndex];
+        }
+
         void CreateMeshComponents () {
             GameObject holder = null;
 
@@ -233,13 +321,22 @@ namespace TerrainGeneration {
             needsUpdate = true;
         }
 
+        public enum BiomeType
+        {
+            Water,
+            Grass,
+            Sand
+        }
+        
         [System.Serializable]
-        public class Biome {
-            [Range (0, 1)]
+        public class Biome
+        {
+            [Range(0, 1)] 
             public float height;
             public Color startCol;
             public Color endCol;
             public int numSteps;
+            public BiomeType type;
         }
 
         public class TerrainData {
