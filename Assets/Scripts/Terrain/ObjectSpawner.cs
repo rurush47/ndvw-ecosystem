@@ -1,47 +1,56 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using JetBrains.Annotations;
 using TerrainGeneration;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 [Serializable]
 public class GameObjectFloatDict : SerializableDictionary<GameObject, float> { }
+
+[Serializable]
+public class BiomeSpawnData
+{
+    public TerrainGenerator.BiomeType biomeType;
+    public GameObjectFloatDict spawnWeightDictionary;
+    public float emptyObjectChance;
+}
 public class ObjectSpawner : MonoBehaviour
 {
-    public GameObjectFloatDict spawnWeightDictionary;
-
+    public List<BiomeSpawnData> biomeSpawnData;
+    [SerializeField] private Transform objectsParent;
+    
     public void SpawnObjects(List<TileData> tileData)
     {
         foreach (var data in tileData)
         {
-            if (data.biome.type == TerrainGenerator.BiomeType.Water)
-            {
-                continue;
-            }
+            var bsd = biomeSpawnData.FirstOrDefault(d => d.biomeType == data.biome.type);
 
-            GameObject newObj = GetRouletteSpinObj(spawnWeightDictionary);
-
-            if (newObj == null)
+            if (bsd != null)
             {
-                continue;
+                var newObj = GetRouletteSpinObj(bsd.spawnWeightDictionary, bsd.emptyObjectChance);
+
+                if (newObj != null)
+                {
+                    Instantiate(newObj, data.worldPos, Quaternion.identity, objectsParent);
+                }
             }
-            
-            Instantiate(newObj, data.worldPos, Quaternion.identity);
         }
     }
 
-    public T GetRouletteSpinObj<T>(IDictionary<T, float> dict)
+    public T GetRouletteSpinObj<T>(IDictionary<T, float> dict, float emptyValChance)
     {
         float sum = 0;
 
+        //TODO can be computed once per biome
         var valuesDict = new Dictionary<float, T>();
         foreach (var kvp in dict)
         {
             sum += kvp.Value;
             valuesDict.Add(sum, kvp.Key);
         }
+
+        sum += emptyValChance;
         
         float randomVal = Random.Range(0, sum);
 

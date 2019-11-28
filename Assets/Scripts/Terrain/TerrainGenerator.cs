@@ -75,7 +75,10 @@ namespace TerrainGeneration {
         private void Start()
         {
             terrainData = Generate();
-            FindObjectOfType<ObjectSpawner>().SpawnObjects(GetAllTileData());
+            if (Application.isPlaying)
+            {
+                FindObjectOfType<ObjectSpawner>().SpawnObjects(GetAllTileData());
+            }
         }
 
         public TileData GetTileDataAt(int x, int y)

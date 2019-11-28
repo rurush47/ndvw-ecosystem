@@ -105,51 +105,21 @@ NavMeshSettings:
   m_BuildSettings:
     serializedVersion: 2
     agentTypeID: 0
-    agentRadius: 0.5
-    agentHeight: 2
-    agentSlope: 45
-    agentClimb: 0.4
-    ledgeDropHeight: 0
+    agentRadius: 0.43
+    agentHeight: 1.9
+    agentSlope: 29.3
+    agentClimb: 1.02
+    ledgeDropHeight: 5.52
     maxJumpAcrossDistance: 0
     minRegionArea: 2
     manualCellSize: 0
-    cellSize: 0.16666667
+    cellSize: 0.14333333
     manualTileSize: 0
     tileSize: 256
-    accuratePlacement: 0
+    accuratePlacement: 1
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &410301905
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 410301906}
-  m_Layer: 0
-  m_Name: GameObject
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &410301906
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 410301905}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.7329926, y: -14.151537, z: -29.377655}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &662603324
 GameObject:
   m_ObjectHideFlags: 0
@@ -257,7 +227,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 40
   m_IsActive: 1
 --- !u!33 &1511724569
 MeshFilter:
@@ -318,6 +288,36 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1607913894
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1607913895}
+  m_Layer: 0
+  m_Name: MapObjects
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1607913895
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1607913894}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 119.49734, y: -46.96134, z: -14.08942}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!43 &1736566939
 Mesh:
@@ -658,16 +658,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1832ef10af547e54d8da9338af870e21, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnWeightDictionary:
-    m_keys:
-    - {fileID: 3479596638433307053, guid: 8ccff2a5baf9a8541b445344a9128c3e, type: 3}
-    - {fileID: 8405138068324885392, guid: 92c262e3329afdf4ab4314f08ed33314, type: 3}
-    - {fileID: 1135140771715300431, guid: bc8b2917b433e5e45a3ee723771e4865, type: 3}
-    - {fileID: 1554532192571152751, guid: 618aa6d794ce6834995105a648c4928f, type: 3}
-    - {fileID: 410301905}
-    m_values:
-    - 10
-    - 50
-    - 10
-    - 10
-    - 500
+  biomeSpawnData:
+  - biomeType: 2
+    spawnWeightDictionary:
+      m_keys:
+      - {fileID: 2511540664446372224, guid: 8ccff2a5baf9a8541b445344a9128c3e, type: 3}
+      - {fileID: 7521296707469367995, guid: bc8b2917b433e5e45a3ee723771e4865, type: 3}
+      - {fileID: 1325783340230070723, guid: 14847b49460a74a4d9e804bfb9934470, type: 3}
+      m_values:
+      - 1
+      - 0.8
+      - 3
+    emptyObjectChance: 8
+  - biomeType: 1
+    spawnWeightDictionary:
+      m_keys:
+      - {fileID: 2511540664446372224, guid: 8ccff2a5baf9a8541b445344a9128c3e, type: 3}
+      - {fileID: 1325783340230070723, guid: 14847b49460a74a4d9e804bfb9934470, type: 3}
+      - {fileID: 7521296707469367995, guid: bc8b2917b433e5e45a3ee723771e4865, type: 3}
+      - {fileID: 4739013871949931997, guid: 618aa6d794ce6834995105a648c4928f, type: 3}
+      m_values:
+      - 0.2
+      - 1
+      - 0.1
+      - 1
+    emptyObjectChance: 5
+  objectsParent: {fileID: 1607913895}
