@@ -4,7 +4,7 @@ using UnityEngine.AI;
 
 public class PredatorController : MonoBehaviour {
 
-	public float moveSpeed = 6;
+	public float moveSpeed;
 
 	public Camera cam;
 	public NavMeshAgent agent;
