@@ -77,7 +77,7 @@ namespace TerrainGeneration {
             terrainData = Generate();
             if (Application.isPlaying)
             {
-                FindObjectOfType<ObjectSpawner>().SpawnObjects(GetAllTileData());
+                //FindObjectOfType<ObjectSpawner>().SpawnObjects(GetAllTileData());
             }
         }
 
