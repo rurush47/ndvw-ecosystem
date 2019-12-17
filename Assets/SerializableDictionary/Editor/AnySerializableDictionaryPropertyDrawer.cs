@@ -1,6 +1,6 @@
 using UnityEditor;
 
 [CustomPropertyDrawer(typeof(GameObjectFloatDict))]
-[CustomPropertyDrawer(typeof(UrgeCurveDict))]
-[CustomPropertyDrawer(typeof(UrgeValueDict))]
+[CustomPropertyDrawer(typeof(UrgesDict))]
+
 public class AnySerializableDictionaryPropertyDrawer : SerializableDictionaryPropertyDrawer {}
