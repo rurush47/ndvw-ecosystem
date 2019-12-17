@@ -91,18 +91,23 @@ public class LevelScriptEditor : Editor
 
         DrawDefaultInspector();
         
+        if(GUILayout.Button("Re-generate"))
+        {
+            objectSpawner.RemoveAllObjects();
+            TerrainGenerator tg = FindObjectOfType<TerrainGenerator>();
+            objectSpawner.SpawnObjects(tg.GetAllTileData());
+        }
+        
         if(GUILayout.Button("Spawn Objects"))
         {
             TerrainGenerator tg = FindObjectOfType<TerrainGenerator>();
             objectSpawner.SpawnObjects(tg.GetAllTileData());
-
         }
         
         if(GUILayout.Button("Remove all objects"))
         {
             objectSpawner.RemoveAllObjects();
         }
-        
     }
 }
 
