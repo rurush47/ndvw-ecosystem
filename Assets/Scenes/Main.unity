@@ -743,7 +743,7 @@ MonoBehaviour:
       - 1
       - 0.8
       - 3
-    emptyObjectChance: 8
+    emptyObjectChance: 90
   - biomeType: 1
     spawnWeightDictionary:
       m_keys:
@@ -756,7 +756,7 @@ MonoBehaviour:
       - 1
       - 0.1
       - 1
-    emptyObjectChance: 5
+    emptyObjectChance: 90
   objectsParent: {fileID: 1607913895}
 --- !u!1001 &4713863380374196018
 PrefabInstance:
