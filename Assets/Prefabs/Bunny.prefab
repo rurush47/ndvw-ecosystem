@@ -41,7 +41,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2511540664446372225}
   - component: {fileID: 8383069249098052214}
-  - component: {fileID: 7909074534005982253}
+  - component: {fileID: 1512532109228913524}
   - component: {fileID: 2253598168784469988}
   - component: {fileID: 2036946174519967864}
   m_Layer: 8
@@ -95,7 +95,7 @@ MonoBehaviour:
   visiblePreys: []
   visiblePredators: []
   visiblePreyFoods: []
---- !u!114 &7909074534005982253
+--- !u!114 &1512532109228913524
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -104,7 +104,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2511540664446372224}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5c82901fc6e349f42892f74e2c372691, type: 3}
+  m_Script: {fileID: 11500000, guid: 37ba7757859c0f04794040963a1c0af6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 100
