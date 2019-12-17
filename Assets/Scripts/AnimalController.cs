@@ -1,8 +1,7 @@
 ﻿using UnityEngine;
-using System.Collections;
 using UnityEngine.AI;
 
-public class PreyController : MonoBehaviour {
+public class AnimalController : MonoBehaviour {
 
 	public float moveSpeed;
 
@@ -10,11 +9,11 @@ public class PreyController : MonoBehaviour {
 	public Camera cam;
 	public NavMeshAgent agent;
 	
-	Rigidbody myRigidbody;
-	Camera viewCamera;
-	Vector3 velocity;
+	protected Rigidbody myRigidbody;
+	protected Camera viewCamera;
+	protected Vector3 velocity;
 
-	void Start () {
+	protected void Start () {
 		fov = GetComponent<FieldOfView>();
 		myRigidbody = GetComponent<Rigidbody> ();
 		viewCamera = Camera.main;
@@ -31,11 +30,11 @@ public class PreyController : MonoBehaviour {
 		return finalPosition;
 	}
 
-	void Update () {
+	protected void Update () {
 		agent.SetDestination(RandomNavmeshLocation(fov.viewRadius));
 	}
 
-	void FixedUpdate() {
+	protected void FixedUpdate() {
 		myRigidbody.MovePosition (myRigidbody.position + velocity * Time.fixedDeltaTime);
 	}
 }
