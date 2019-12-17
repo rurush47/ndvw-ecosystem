@@ -5,6 +5,10 @@ using TerrainGeneration;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 [Serializable]
 public class GameObjectFloatDict : SerializableDictionary<GameObject, float> { }
 
@@ -64,4 +68,42 @@ public class ObjectSpawner : MonoBehaviour
 
         return default(T);
     }
+
+    public void RemoveAllObjects()
+    {
+        foreach (Transform t in objectsParent.Cast<Transform>().ToList())
+        {
+            DestroyImmediate(t.gameObject);
+        }
+    }
 }
+
+
+
+#if UNITY_EDITOR
+
+[CustomEditor(typeof(ObjectSpawner))]
+public class LevelScriptEditor : Editor 
+{
+    public override void OnInspectorGUI()
+    {
+        ObjectSpawner objectSpawner = (ObjectSpawner)target;
+
+        DrawDefaultInspector();
+        
+        if(GUILayout.Button("Spawn Objects"))
+        {
+            TerrainGenerator tg = FindObjectOfType<TerrainGenerator>();
+            objectSpawner.SpawnObjects(tg.GetAllTileData());
+
+        }
+        
+        if(GUILayout.Button("Remove all objects"))
+        {
+            objectSpawner.RemoveAllObjects();
+        }
+        
+    }
+}
+
+#endif
