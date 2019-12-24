@@ -32,7 +32,7 @@ public class FieldOfViewEditor : Editor
         }
 
         
-        Handles.color = Color.red;
+        Handles.color = Color.green;
         foreach (Transform visiblePreyFoods in fow.visiblePreyFoods)
         {
             Handles.DrawLine(fow.transform.position,visiblePreyFoods.position);
