@@ -9,13 +9,14 @@ public class AnimalController : MonoBehaviour {
 	public Camera cam;
 	public NavMeshAgent agent;
 	
-	protected Rigidbody myRigidbody;
+	public Rigidbody myRigidbody;
 	protected Camera viewCamera;
 	protected Vector3 velocity;
 
 	protected void Start () {
 		fov = GetComponent<FieldOfView>();
-		myRigidbody = GetComponent<Rigidbody> ();
+		myRigidbody = GetComponent<Rigidbody>();
+		agent = GetComponent<NavMeshAgent>();
 		viewCamera = Camera.main;
 	}
 
@@ -31,7 +32,16 @@ public class AnimalController : MonoBehaviour {
 	}
 
 	protected void Update () {
-		agent.SetDestination(RandomNavmeshLocation(fov.viewRadius));
+
+		if (fov.visiblePreyFoods.Count==0){
+			agent.SetDestination(RandomNavmeshLocation(fov.viewRadius));
+		}
+		else {
+				agent.SetDestination(fov.visiblePreyFoods[0].position);
+
+        }
+
+		// agent.SetDestination(RandomNavmeshLocation(fov.viewRadius));
 	}
 
 	protected void FixedUpdate() {
