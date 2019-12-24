@@ -79,7 +79,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 148177d5d40b7a7438a7ab439b0ea9ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  viewRadius: 7
+  viewRadius: 10
   viewAngle: 180
   preyMask:
     serializedVersion: 2
@@ -108,7 +108,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37ba7757859c0f04794040963a1c0af6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 100
+  moveSpeed: 50
   fov: {fileID: 8383069249098052214}
   cam: {fileID: 0}
   agent: {fileID: 2253598168784469988}
