@@ -88,6 +88,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4291101016131015568}
   - component: {fileID: 6717571228058138533}
+  - component: {fileID: 2534955931722048553}
   m_Layer: 11
   m_Name: Fern
   m_TagString: Untagged
@@ -148,6 +149,19 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!135 &2534955931722048553
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1325783340230070723}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0.41, z: 0}
 --- !u!1 &3642462144582187742
 GameObject:
   m_ObjectHideFlags: 0
