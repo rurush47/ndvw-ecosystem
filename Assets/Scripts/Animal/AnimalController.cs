@@ -33,15 +33,13 @@ public class AnimalController : MonoBehaviour {
 
 	protected void Update () {
 
+		//Goat : goToPreyFood
 		if (fov.visiblePreyFoods.Count==0){
 			agent.SetDestination(RandomNavmeshLocation(fov.viewRadius));
 		}
 		else {
 				agent.SetDestination(fov.visiblePreyFoods[0].position);
-
         }
-
-		// agent.SetDestination(RandomNavmeshLocation(fov.viewRadius));
 	}
 
 	protected void FixedUpdate() {
