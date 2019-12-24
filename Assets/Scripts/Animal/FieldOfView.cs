@@ -68,40 +68,40 @@ public class FieldOfView : MonoBehaviour {
 	
 
 		for (int i = 0; i < preysInViewRadius.Length; i++) {
-			Transform target = preysInViewRadius [i].transform;
+			Transform target = preysInViewRadius[i].transform;
 			Vector3 dirToTarget = (target.position - transform.position).normalized;
 			// the following line check if we have a target in our field of view
-			if (Vector3.Angle (transform.forward, dirToTarget) < viewAngle / 2) {
-				float dstToTarget = Vector3.Distance (transform.position, target.position);
+			if (Vector3.Angle(transform.forward, dirToTarget) < viewAngle / 2) {
+				float dstToTarget = Vector3.Distance(transform.position, target.position);
 				// the following line check if we have no obstacle between the target and us
-				if (!Physics.Raycast (transform.position, dirToTarget, dstToTarget, treeMask)) {
-					visiblePreys.Add (target);
+				if (!Physics.Raycast(transform.position, dirToTarget, dstToTarget, treeMask)) {
+					visiblePreys.Add(target);
 				}
 			}
 		}
 
 		for (int i = 0; i < predatorsInViewRadius.Length; i++) {
-			Transform target = predatorsInViewRadius [i].transform;
+			Transform target = predatorsInViewRadius[i].transform;
 			Vector3 dirToTarget = (target.position - transform.position).normalized;
 			// the following line check if we have a target in our field of view
-			if (Vector3.Angle (transform.forward, dirToTarget) < viewAngle / 2) {
-				float dstToTarget = Vector3.Distance (transform.position, target.position);
+			if (Vector3.Angle(transform.forward, dirToTarget) < viewAngle / 2) {
+				float dstToTarget = Vector3.Distance(transform.position, target.position);
 				// the following line check if we have no obstacle between the target and us
-				if (!Physics.Raycast (transform.position, dirToTarget, dstToTarget, treeMask)) {
-					visiblePredators.Add (target);
+				if (!Physics.Raycast(transform.position, dirToTarget, dstToTarget, treeMask)) {
+					visiblePredators.Add(target);
 				}
 			}
 		}
 
 		for (int i = 0; i < preyFoodsInViewRadius.Length; i++) {
-			Transform target = preyFoodsInViewRadius [i].transform;
+			Transform target = preyFoodsInViewRadius[i].transform;
 			Vector3 dirToTarget = (target.position - transform.position).normalized;
 			// the following line check if we have a target in our field of view
-			if (Vector3.Angle (transform.forward, dirToTarget) < viewAngle / 2) {
-				float dstToTarget = Vector3.Distance (transform.position, target.position);
+			if (Vector3.Angle(transform.forward, dirToTarget) < viewAngle / 2) {
+				float dstToTarget = Vector3.Distance(transform.position, target.position);
 				// the following line check if we have no obstacle between the target and us
-				if (!Physics.Raycast (transform.position, dirToTarget, dstToTarget, treeMask)) {
-					visiblePreyFoods.Add (target);
+				if (!Physics.Raycast(transform.position, dirToTarget, dstToTarget, treeMask)) {
+					visiblePreyFoods.Add(target);
 				}
 			}
 		}
