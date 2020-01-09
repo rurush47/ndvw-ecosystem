@@ -17,6 +17,7 @@ public class FieldOfView : MonoBehaviour {
 	public LayerMask predatorMask;
 	public LayerMask preyFoodMask;
 	public LayerMask treeMask;
+	public LayerMask waterMask;
 
 
 	// List of visible targets at each time
@@ -53,6 +54,7 @@ public class FieldOfView : MonoBehaviour {
 		Collider[] preysInViewRadius = Physics.OverlapSphere (transform.position, viewRadius, preyMask);
 		Collider[] predatorsInViewRadius = Physics.OverlapSphere (transform.position, viewRadius, predatorMask);
 		Collider[] preyFoodsInViewRadius = Physics.OverlapSphere (transform.position, viewRadius, preyFoodMask);
+		Collider[] waterInViewRadius = Physics.OverlapSphere (transform.position, viewRadius, waterMask);
 
 
 		// for (int i = 0; i < targetsInViewRadius.Length; i++) {
@@ -114,6 +116,23 @@ public class FieldOfView : MonoBehaviour {
 				if (!Physics.Raycast(transform.position, dirToTarget, dstToTarget, treeMask)) {
 					visiblePreyFoods.Add(target);
 					visiblePreyFoods = visiblePreyFoods
+						.OrderBy(x => Vector3.Distance(transform.position, x.position))
+						.ToList();
+				}
+			}
+		}
+		
+		for (int i = 0; i < waterInViewRadius.Length; i++) {
+			Transform target = waterInViewRadius[i].transform;
+			if(target == transform) continue;
+			Vector3 dirToTarget = (target.position - transform.position).normalized;
+			// the following line check if we have a target in our field of view
+			if (Vector3.Angle(transform.forward, dirToTarget) < viewAngle / 2) {
+				float dstToTarget = Vector3.Distance(transform.position, target.position);
+				// the following line check if we have no obstacle between the target and us
+				if (!Physics.Raycast(transform.position, dirToTarget, dstToTarget, treeMask)) {
+					visibleWaterPoints.Add(target);
+					visibleWaterPoints = visibleWaterPoints
 						.OrderBy(x => Vector3.Distance(transform.position, x.position))
 						.ToList();
 				}

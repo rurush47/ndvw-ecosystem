@@ -175,6 +175,9 @@ MonoBehaviour:
   treeMask:
     serializedVersion: 2
     m_Bits: 1024
+  waterMask:
+    serializedVersion: 2
+    m_Bits: 16
   visiblePreys: []
   visiblePredators: []
   visiblePreyFoods: []
@@ -296,6 +299,7 @@ MonoBehaviour:
   gotoDistance: 1.5
   gotoTimeout: 10
   searchTimeout: 5
+  randomMoveDirectionTime: 5
 --- !u!195 &1590190721532614645
 NavMeshAgent:
   m_ObjectHideFlags: 0

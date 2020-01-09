@@ -38,6 +38,13 @@ public class FieldOfViewEditor : Editor
             Handles.DrawLine(fow.transform.position,visiblePreyFoods.position);
 
         }
+        
+        Handles.color = Color.yellow;
+        foreach (Transform visibleWaterPoints in fow.visibleWaterPoints)
+        {
+            Handles.DrawLine(fow.transform.position,visibleWaterPoints.position);
+
+        }
     }
 }
 
