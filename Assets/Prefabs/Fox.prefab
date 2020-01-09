@@ -122,6 +122,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8841083109109118762}
   - component: {fileID: 1580873419}
+  - component: {fileID: 8371190743117229301}
   - component: {fileID: 1167988046835675232}
   - component: {fileID: 1590190721532614645}
   - component: {fileID: -8488915564828642829}
@@ -170,13 +171,110 @@ MonoBehaviour:
     m_Bits: 512
   preyFoodMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 256
   treeMask:
     serializedVersion: 2
     m_Bits: 1024
   visiblePreys: []
   visiblePredators: []
   visiblePreyFoods: []
+  visibleWaterPoints: []
+--- !u!114 &8371190743117229301
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7521296707469367995}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92e9fb01e426d6244945e90d1c9249dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  urgeCurveDict:
+    m_keys: 000000000100000002000000
+    m_values:
+    - curve:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 0
+          inSlope: 2
+          outSlope: 2
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        - serializedVersion: 3
+          time: 1
+          value: 1
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 0
+      utilityValue: 0
+      urgeValue: 0
+      increaseSpeed: 0.1
+    - curve:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 0
+          inSlope: 2
+          outSlope: 2
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        - serializedVersion: 3
+          time: 1
+          value: 1
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 0
+      utilityValue: 0.1
+      urgeValue: 0
+      increaseSpeed: 0.12
+    - curve:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 0
+          inSlope: 2
+          outSlope: 2
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        - serializedVersion: 3
+          time: 1
+          value: 1
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 0
+      utilityValue: 0
+      urgeValue: 0
+      increaseSpeed: 0.11
 --- !u!114 &1167988046835675232
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -189,11 +287,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb264f8f1753a3e478bdfcdeb4fc6e82, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 50
+  moveSpeed: 0
   fov: {fileID: 1580873419}
   cam: {fileID: 0}
   agent: {fileID: 1590190721532614645}
   myRigidbody: {fileID: -8488915564828642829}
+  utilitySystem: {fileID: 8371190743117229301}
+  gotoDistance: 1.5
+  gotoTimeout: 10
+  searchTimeout: 5
 --- !u!195 &1590190721532614645
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -203,8 +305,8 @@ NavMeshAgent:
   m_GameObject: {fileID: 7521296707469367995}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.5
-  m_Speed: 100
+  m_Radius: 0.13
+  m_Speed: 1
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120

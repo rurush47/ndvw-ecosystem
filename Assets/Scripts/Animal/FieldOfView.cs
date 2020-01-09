@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 public class FieldOfView : MonoBehaviour {
 
@@ -26,6 +27,7 @@ public class FieldOfView : MonoBehaviour {
 	public List<Transform> visiblePreys = new List<Transform>();
 	public List<Transform> visiblePredators = new List<Transform>();
 	public List<Transform> visiblePreyFoods = new List<Transform>();
+	public List<Transform> visibleWaterPoints = new List<Transform>();
 
 	void Start() {
 		StartCoroutine ("FindTargetsWithDelay", .2f);
@@ -69,6 +71,7 @@ public class FieldOfView : MonoBehaviour {
 
 		for (int i = 0; i < preysInViewRadius.Length; i++) {
 			Transform target = preysInViewRadius[i].transform;
+			if(target == transform) continue;
 			Vector3 dirToTarget = (target.position - transform.position).normalized;
 			// the following line check if we have a target in our field of view
 			if (Vector3.Angle(transform.forward, dirToTarget) < viewAngle / 2) {
@@ -76,12 +79,16 @@ public class FieldOfView : MonoBehaviour {
 				// the following line check if we have no obstacle between the target and us
 				if (!Physics.Raycast(transform.position, dirToTarget, dstToTarget, treeMask)) {
 					visiblePreys.Add(target);
+					visiblePreys = visiblePreys
+						.OrderBy(x => Vector3.Distance(transform.position, x.position))
+						.ToList();
 				}
 			}
 		}
 
 		for (int i = 0; i < predatorsInViewRadius.Length; i++) {
 			Transform target = predatorsInViewRadius[i].transform;
+			if(target == transform) continue;
 			Vector3 dirToTarget = (target.position - transform.position).normalized;
 			// the following line check if we have a target in our field of view
 			if (Vector3.Angle(transform.forward, dirToTarget) < viewAngle / 2) {
@@ -89,12 +96,16 @@ public class FieldOfView : MonoBehaviour {
 				// the following line check if we have no obstacle between the target and us
 				if (!Physics.Raycast(transform.position, dirToTarget, dstToTarget, treeMask)) {
 					visiblePredators.Add(target);
+					visiblePredators = visiblePredators
+						.OrderBy(x => Vector3.Distance(transform.position, x.position))
+						.ToList();
 				}
 			}
 		}
 
 		for (int i = 0; i < preyFoodsInViewRadius.Length; i++) {
 			Transform target = preyFoodsInViewRadius[i].transform;
+			if(target == transform) continue;
 			Vector3 dirToTarget = (target.position - transform.position).normalized;
 			// the following line check if we have a target in our field of view
 			if (Vector3.Angle(transform.forward, dirToTarget) < viewAngle / 2) {
@@ -102,6 +113,9 @@ public class FieldOfView : MonoBehaviour {
 				// the following line check if we have no obstacle between the target and us
 				if (!Physics.Raycast(transform.position, dirToTarget, dstToTarget, treeMask)) {
 					visiblePreyFoods.Add(target);
+					visiblePreyFoods = visiblePreyFoods
+						.OrderBy(x => Vector3.Distance(transform.position, x.position))
+						.ToList();
 				}
 			}
 		}
