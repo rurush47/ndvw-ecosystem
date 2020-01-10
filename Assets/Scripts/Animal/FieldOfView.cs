@@ -48,6 +48,7 @@ public class FieldOfView : MonoBehaviour {
 		visiblePreys.Clear();
 	    visiblePredators.Clear();
 		visiblePreyFoods.Clear();
+		visibleWaterPoints.Clear();
 
 		//Collider[] targetsInViewRadius = Physics.OverlapSphere (transform.position, viewRadius, targetMask);
 
