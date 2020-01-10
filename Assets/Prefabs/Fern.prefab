@@ -92,7 +92,7 @@ GameObject:
   - component: {fileID: 3526160294481723183}
   m_Layer: 11
   m_Name: Fern
-  m_TagString: Untagged
+  m_TagString: Plant
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 1
   m_StaticEditorFlags: 8
