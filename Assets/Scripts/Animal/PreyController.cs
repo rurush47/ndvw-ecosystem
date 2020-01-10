@@ -1,10 +1,7 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using DG.Tweening;
-using Prime31.StateKitLite;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.AI;
 
 public enum PreyStates
 {
@@ -14,161 +11,15 @@ public enum PreyStates
 	Flee
 }
 
-public class PreyController : StateKitLite<PreyStates>
+public class PreyController : AnimalController<PreyStates>
 {
-	public float moveSpeed;
-
-	public FieldOfView fov;
-	public Camera cam;
-	public NavMeshAgent agent;
-	
-	public Rigidbody myRigidbody;
-	protected Camera viewCamera;
-	protected Vector3 velocity;
-
-	[Header("Refs:")] 
-	[SerializeField] private UtilitySystem utilitySystem;
-	[SerializeField] private DebugUI debugUi;
-
-	protected void Start () {
-		fov = GetComponent<FieldOfView>();
-		myRigidbody = GetComponent<Rigidbody>();
-		agent = GetComponent<NavMeshAgent>();
-		viewCamera = Camera.main;
-
-		if (GameManager.Instance.deathEnabled)
-		{
-			utilitySystem.SubscribeOnUrgeExceedLimit((() =>
-			{
-			
-				if (gameObject != null)
-				{
-					Die();
-				}
-			}));
-		}
-
+	private new void Start()
+	{
+		base.Start();
 		initialState = PreyStates.Search;
-	}
-
-	public Vector3 RandomNavmeshLocation(float radius) {
-		Vector3 randomDirection = Random.insideUnitSphere * radius;
-		randomDirection += transform.position;
-		NavMeshHit hit;
-		Vector3 finalPosition = Vector3.zero;
-		if (NavMesh.SamplePosition(randomDirection, out hit, radius, 1)) {
-			finalPosition = hit.position;            
-		}
-		return finalPosition;
-	}
-
-	private Vector3 GetMeanVector(System.Collections.Generic.List<Vector3> positions){
-		if (positions.Count == 0)
-			return Vector3.zero;
-		
-		float x = 0f;
-		float y = 0f;
-		float z = 0f;
-
-		foreach (Vector3 pos in positions)
-		{
-			x += pos.x;
-			y += pos.y;
-			z += pos.z;
-		}
-		Vector3 meanVector = new Vector3(x / positions.Count, y / positions.Count, z / positions.Count);
-		return meanVector;
-	}
-
-	private Vector3 GetOppositeVector(Vector3 position){
-		return Vector3.zero - position;
-	}
-
-	public void Die()
-	{
-		if (!GameManager.Instance.deathEnabled) return;
-
-			agent.isStopped = true;
-		transform.DOScale(Vector3.zero, 1).onComplete += () =>
-		{
-			Destroy(gameObject);
-		};
-	}
-	
-	protected void Update () {
-		base.Update();
-		// goToPreyFood
-		///////////////////////////////////
-		// if (fov.visiblePreyFoods.Count==0){
-		// 	agent.SetDestination(RandomNavmeshLocation(fov.viewRadius));
-		// }
-		// else {
-		// 		agent.SetDestination(fov.visiblePreyFoods[0].position);
-        // }
-
-		// fleePredator
-		///////////////////////////////////////////
-		// https://answers.unity.com/questions/1187267/average-position-of-a-set-of-gameobjects.html
-		
-		// if (fov.visiblePredators.Count==0){
-		// 	agent.SetDestination(RandomNavmeshLocation(fov.viewRadius));
-		// }
-		// else {
-		// 	System.Collections.Generic.List<Vector3> positions = new System.Collections.Generic.List<Vector3>();
-		// 	for (int i = 0; i < fov.visiblePredators.Count; i++) {
-		// 		positions.Add (fov.visiblePredators[i].position);
-		// 	}
-		// 	agent.SetDestination(GetOppositeVector((GetMeanVector(positions))));
-        // }
-
-		// die
-		//////////////////////////////////
-		// if (fov.visiblePredators.Count==0){
-		// 	agent.SetDestination(RandomNavmeshLocation(fov.viewRadius));
-		// }
-		// else {
-		// 	for (int i = 0; i < fov.visiblePredators.Count; i++) {
-		// 		//if a predator is at less than 1.5 of distance (equivalent of touch the prey)
-		// 		if(Vector3.Distance(fov.visiblePredators[i].position, transform.position) <= 1.5){
-		// 			Destroy(gameObject);
-		// 		}
-		// 	}
-        // }
-	
-	}
-
-	protected void FixedUpdate() {
-		myRigidbody.MovePosition (myRigidbody.position + velocity * Time.fixedDeltaTime);
-	}
-	
-	public Transform getElementIfExists(List<Transform> list, int index)
-	{
-		if (list.Count >= index + 1)
-		{
-			return list[index];
-		}
-		else
-		{
-			return null;
-		}
 	}
 	
 	#region StateMachine
-
-	[Header("State machine:")] 
-	[SerializeField] private float gotoDistance;
-	[SerializeField] private float gotoTimeout = 8;
-	[SerializeField] private float searchTimeout = 5;
-	[SerializeField] private UrgeFloatDict urgeDistanceDict = new UrgeFloatDict()
-	{
-		{ Urge.Hunger, 2},
-		{ Urge.Thirst, 5},
-		{ Urge.Mating, 2},
-	};
-	private Urge currentUrge;
-	private Coroutine wanderCoroutine;
-	private Tween searchTimeoutTween;
-	private Tween gotoTimeoutTween;
 
 	void Search_Enter()
 	{
@@ -194,9 +45,7 @@ public class PreyController : StateKitLite<PreyStates>
 			Search_Enter();
 		});
 	}
-
-	[SerializeField] private float randomMoveDirectionTime = 5;
-
+	
 	IEnumerator MoveRandomly()
 	{
 		while (currentState == PreyStates.Search)
@@ -254,8 +103,6 @@ public class PreyController : StateKitLite<PreyStates>
 		gotoTimeoutTween = DOVirtual
 			.DelayedCall(gotoTimeout, () => currentState = PreyStates.Search);
 	}
-
-	private Transform gotoTarget;
 	
 	void Goto_Tick()
 	{

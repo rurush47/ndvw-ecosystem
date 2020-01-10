@@ -1,10 +1,7 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using DG.Tweening;
-using Prime31.StateKitLite;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.AI;
 
 public enum PredatorStates
 {
@@ -13,88 +10,16 @@ public enum PredatorStates
 	DoAction
 }
 
-public class PredatorController : StateKitLite<PredatorStates> {
-
-	public float moveSpeed;
-
-	public FieldOfView fov;
-	public Camera cam;
-	public NavMeshAgent agent;
-	
-	public Rigidbody myRigidbody;
-	protected Camera viewCamera;
-	protected Vector3 velocity;
-
-	[Header("References:")] 
-	[SerializeField] private UtilitySystem utilitySystem;
-	[SerializeField] private DebugUI debugUi;
-
-	protected void Start () {
-		fov = GetComponent<FieldOfView>();
-		myRigidbody = GetComponent<Rigidbody>();
-		agent = GetComponent<NavMeshAgent>();
-		viewCamera = Camera.main;
-
-		if (GameManager.Instance.deathEnabled)
-		{
-			utilitySystem.SubscribeOnUrgeExceedLimit((() =>
-			{
-				if (gameObject != null)
-				{
-					Die();
-				}
-			}));	
-		}
-		
+public class PredatorController : AnimalController<PredatorStates> 
+{
+	private new void Start()
+	{
+		base.Start();
 		initialState = PredatorStates.Search;
 	}
-
-	public Vector3 RandomNavmeshLocation(float radius) 
-	{
-		Vector3 randomDirection = Random.insideUnitSphere * radius;
-		randomDirection += transform.position;
-		NavMeshHit hit;
-		Vector3 finalPosition = Vector3.zero;
-		if (NavMesh.SamplePosition(randomDirection, out hit, radius, 1)) {
-			finalPosition = hit.position;            
-		}
-		return finalPosition;
-	}
-
-	protected void FixedUpdate() {
-		myRigidbody.MovePosition (myRigidbody.position + moveSpeed * Time.fixedDeltaTime * velocity.normalized);
-	}
-
-	public Transform getElementIfExists(List<Transform> list, int index)
-	{
-		if (list.Count >= index + 1)
-		{
-			return list[index];
-		}
-		else
-		{
-			return null;
-		}
-	}
-
+	
 	#region StateMachine
-
-	[Header("State machine:")] 
-	[SerializeField] private float gotoDistance;
-	[SerializeField] private float gotoTimeout = 8;
-	[SerializeField] private float searchTimeout = 5;
-
-	[SerializeField] private UrgeFloatDict urgeFloatDict = new UrgeFloatDict()
-	{
-		{ Urge.Hunger, 2},
-		{ Urge.Thirst, 5},
-		{ Urge.Mating, 2},
-	};
-	private Urge currentUrge;
-	private Coroutine wanderCoroutine;
-	private Tween searchTimeoutTween;
-	private Tween gotoTimeoutTween;
-
+	
 	void Search_Enter()
 	{
 		currentUrge = utilitySystem.GetUrgeWithHighestVal();
@@ -119,9 +44,7 @@ public class PredatorController : StateKitLite<PredatorStates> {
 			Search_Enter();
 		});
 	}
-
-	[SerializeField] private float randomMoveDirectionTime = 5;
-
+	
 	IEnumerator MoveRandomly()
 	{
 		while (currentState == PredatorStates.Search)
@@ -177,8 +100,7 @@ public class PredatorController : StateKitLite<PredatorStates> {
 		gotoTimeoutTween = DOVirtual
 			.DelayedCall(gotoTimeout, () => currentState = PredatorStates.Search);
 	}
-
-	private Transform gotoTarget;
+	
 	void Goto_Tick()
 	{
 		Transform target = null;
@@ -209,7 +131,7 @@ public class PredatorController : StateKitLite<PredatorStates> {
 			return;
 		}
 
-		if (Vector3.Distance(transform.position, target.position) < urgeFloatDict[currentUrge])
+		if (Vector3.Distance(transform.position, target.position) < urgeDistanceDict[currentUrge])
 		{
 			gotoTarget = target;
 			currentState = PredatorStates.DoAction;

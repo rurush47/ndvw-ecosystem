@@ -221,13 +221,13 @@ MonoBehaviour:
   gotoDistance: 0
   gotoTimeout: 8
   searchTimeout: 5
+  randomMoveDirectionTime: 5
   urgeDistanceDict:
     m_keys: 000000000100000002000000
     m_values:
     - 3
     - 1
     - 1
-  randomMoveDirectionTime: 5
 --- !u!195 &2253598168784469988
 NavMeshAgent:
   m_ObjectHideFlags: 0
