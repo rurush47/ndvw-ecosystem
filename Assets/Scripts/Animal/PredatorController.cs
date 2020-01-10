@@ -27,6 +27,7 @@ public class PredatorController : StateKitLite<PredatorStates> {
 
 	[Header("References:")] 
 	[SerializeField] private UtilitySystem utilitySystem;
+	[SerializeField] private DebugUI debugUi;
 
 	protected void Start () {
 		fov = GetComponent<FieldOfView>();
@@ -89,10 +90,12 @@ public class PredatorController : StateKitLite<PredatorStates> {
 
 		agent.isStopped = false;
 		//DEBUG
+		string text = "Searching for: " + currentUrge;
 		if (Selection.Contains(gameObject))
 		{
-			Debug.Log("Searching for: " + currentUrge);
+			Debug.Log(text);
 		}
+		debugUi.UpdateStateText(text);
 		//=====
 		
 		//Start random wander
@@ -151,10 +154,12 @@ public class PredatorController : StateKitLite<PredatorStates> {
 	void Goto_Enter()
 	{
 		//DEBUG
+		string text = "Going for: " + currentUrge;
 		if (Selection.Contains(gameObject))
 		{
-			Debug.Log("Going for: " + currentUrge);
+			Debug.Log(text);
 		}
+		debugUi.UpdateStateText(text);
 		//=====
 		
 		//TIMEOUT
@@ -208,10 +213,12 @@ public class PredatorController : StateKitLite<PredatorStates> {
 	void DoAction_Enter()
 	{
 		//DEBUG
+		string text = "Performing: " + currentUrge;
 		if (Selection.Contains(gameObject))
 		{
-			Debug.Log("Performing: " + currentUrge);
+			Debug.Log(text);
 		}
+		debugUi.UpdateStateText(text);
 		//=====
 
 		//TODO perform action here (animate etc)
