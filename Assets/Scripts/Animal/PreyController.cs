@@ -36,6 +36,14 @@ public class PreyController : StateKitLite<PreyStates>
 		agent = GetComponent<NavMeshAgent>();
 		viewCamera = Camera.main;
 
+		utilitySystem.SubscribeOnUrgeExceedLimit((() =>
+		{
+			if (gameObject != null)
+			{
+				Die();
+			}
+		}));
+		
 		initialState = PreyStates.Search;
 	}
 
@@ -72,6 +80,15 @@ public class PreyController : StateKitLite<PreyStates>
 		return Vector3.zero - position;
 	}
 
+	public void Die()
+	{
+		agent.isStopped = true;
+		transform.DOScale(Vector3.zero, 1).onComplete += () =>
+		{
+			Destroy(gameObject);
+		};
+	}
+	
 	protected void Update () {
 		base.Update();
 		// goToPreyFood
@@ -232,6 +249,7 @@ public class PreyController : StateKitLite<PreyStates>
 			.DelayedCall(gotoTimeout, () => currentState = PreyStates.Search);
 	}
 
+	private Transform gotoTarget;
 	
 	void Goto_Tick()
 	{
@@ -267,6 +285,7 @@ public class PreyController : StateKitLite<PreyStates>
 
 		if (Vector3.Distance(transform.position, target.position) < urgeDistanceDict[currentUrge])
 		{
+			gotoTarget = target;		
 			currentState = PreyStates.DoAction;
 		}
 	}
@@ -289,7 +308,12 @@ public class PreyController : StateKitLite<PreyStates>
 		//=====
 		
 		//TODO perform action here (animate etc)
-		
+		switch (currentUrge)
+		{
+			case Urge.Hunger:
+				gotoTarget.GetComponent<Plant>().Die();
+				break;
+		}
 		//
 		
 		//TIME OUT SEARCH FOR NEW URGE

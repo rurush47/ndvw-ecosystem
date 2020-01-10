@@ -71,4 +71,12 @@ public class UtilitySystem : MonoBehaviour
     {
         urgeCurveDict[currentUrge].urgeValue = 0;
     }
+
+    public void SubscribeOnUrgeExceedLimit(UrgeProperties.VoidDelegate action)
+    {
+        foreach (UrgeProperties urgeProperties in urgeCurveDict.Values)
+        {
+            urgeProperties.onUrgeExceedsLimit += action;
+        }
+    }
 }

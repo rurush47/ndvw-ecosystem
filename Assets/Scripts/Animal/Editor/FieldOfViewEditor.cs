@@ -20,30 +20,30 @@ public class FieldOfViewEditor : Editor
         Handles.color = Color.red;
         foreach (Transform visiblePreys in fow.visiblePreys)
         {
+            if(!fow.transform.gameObject) return;
             Handles.DrawLine(fow.transform.position,visiblePreys.position);
-
         }
 
         Handles.color = Color.blue;
         foreach (Transform visiblePredators in fow.visiblePredators)
         {
+            if(!fow.transform.gameObject) return;
             Handles.DrawLine(fow.transform.position,visiblePredators.position);
-
         }
 
         
         Handles.color = Color.green;
         foreach (Transform visiblePreyFoods in fow.visiblePreyFoods)
         {
+            if(!fow.transform.gameObject) return;
             Handles.DrawLine(fow.transform.position,visiblePreyFoods.position);
-
         }
         
         Handles.color = Color.yellow;
         foreach (Transform visibleWaterPoints in fow.visibleWaterPoints)
         {
+            if(!fow.transform.gameObject) return;
             Handles.DrawLine(fow.transform.position,visibleWaterPoints.position);
-
         }
     }
 }

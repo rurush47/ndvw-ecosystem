@@ -35,6 +35,14 @@ public class PredatorController : StateKitLite<PredatorStates> {
 		agent = GetComponent<NavMeshAgent>();
 		viewCamera = Camera.main;
 
+		utilitySystem.SubscribeOnUrgeExceedLimit((() =>
+		{
+			if (gameObject != null)
+			{
+				Die();
+			}
+		}));
+		
 		initialState = PredatorStates.Search;
 	}
 
@@ -167,7 +175,7 @@ public class PredatorController : StateKitLite<PredatorStates> {
 			.DelayedCall(gotoTimeout, () => currentState = PredatorStates.Search);
 	}
 
-	
+	private Transform gotoTarget;
 	void Goto_Tick()
 	{
 		Transform target = null;
@@ -200,8 +208,18 @@ public class PredatorController : StateKitLite<PredatorStates> {
 
 		if (Vector3.Distance(transform.position, target.position) < urgeFloatDict[currentUrge])
 		{
+			gotoTarget = target;
 			currentState = PredatorStates.DoAction;
 		}
+	}
+	
+	public void Die()
+	{
+		agent.isStopped = true;
+		transform.DOScale(Vector3.zero, 1).onComplete += () =>
+		{
+			Destroy(gameObject);
+		};
 	}
 
 	void Goto_Exit()
@@ -222,7 +240,12 @@ public class PredatorController : StateKitLite<PredatorStates> {
 		//=====
 
 		//TODO perform action here (animate etc)
-		
+		switch (currentUrge)
+		{
+			case Urge.Hunger:
+				gotoTarget.GetComponent<PreyController>().Die();
+				break;
+		}
 		//
 		
 		//TIME OUT SEARCH FOR NEW URGE
