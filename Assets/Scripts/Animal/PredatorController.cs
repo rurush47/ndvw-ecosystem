@@ -71,6 +71,13 @@ public class PredatorController : StateKitLite<PredatorStates> {
 	[SerializeField] private float gotoDistance;
 	[SerializeField] private float gotoTimeout = 8;
 	[SerializeField] private float searchTimeout = 5;
+
+	[SerializeField] private UrgeFloatDict urgeFloatDict = new UrgeFloatDict()
+	{
+		{ Urge.Hunger, 2},
+		{ Urge.Thirst, 5},
+		{ Urge.Mating, 2},
+	};
 	private Urge currentUrge;
 	private Coroutine wanderCoroutine;
 	private Tween searchTimeoutTween;
@@ -186,7 +193,7 @@ public class PredatorController : StateKitLite<PredatorStates> {
 			return;
 		}
 
-		if (Vector3.Distance(transform.position, target.position) < gotoDistance)
+		if (Vector3.Distance(transform.position, target.position) < urgeFloatDict[currentUrge])
 		{
 			currentState = PredatorStates.DoAction;
 		}

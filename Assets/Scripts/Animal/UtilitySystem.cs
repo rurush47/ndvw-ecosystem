@@ -6,6 +6,9 @@ using Random = UnityEngine.Random;
 [Serializable]
 public class UrgesDict : SerializableDictionary<Urge, UrgeProperties> { }
 
+[Serializable]
+public class UrgeFloatDict : SerializableDictionary<Urge, float> { }
+
 public enum Urge
 {
     Thirst,

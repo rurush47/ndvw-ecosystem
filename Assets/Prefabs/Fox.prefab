@@ -299,6 +299,12 @@ MonoBehaviour:
   gotoDistance: 1.5
   gotoTimeout: 10
   searchTimeout: 5
+  urgeFloatDict:
+    m_keys: 010000000000000002000000
+    m_values:
+    - 1
+    - 3
+    - 1
   randomMoveDirectionTime: 5
 --- !u!195 &1590190721532614645
 NavMeshAgent:
