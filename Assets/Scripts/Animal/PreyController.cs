@@ -182,6 +182,8 @@ public class PreyController : StateKitLite<PreyStates>
 	
 	void Search_Tick()
 	{
+		FleeCheck();
+
 		switch (currentUrge)
 		{
 			case Urge.Hunger:
@@ -197,7 +199,7 @@ public class PreyController : StateKitLite<PreyStates>
 				}
 				break;
 			case Urge.Mating:
-				if (fov.visiblePredators.Count > 0)
+				if (fov.visiblePreys.Count > 0)
 				{
 					currentState = PreyStates.Goto;
 				}
@@ -228,6 +230,8 @@ public class PreyController : StateKitLite<PreyStates>
 	
 	void Goto_Tick()
 	{
+		FleeCheck();
+		
 		Transform target = null;
 		switch (currentUrge)
 		{
@@ -293,15 +297,37 @@ public class PreyController : StateKitLite<PreyStates>
 	{
 		utilitySystem.ResetUrge(currentUrge);
 	}
+
+	void FleeCheck()
+	{
+		var target = getElementIfExists(fov.visiblePredators, 0);
+		if (target != null)
+		{
+			currentState = PreyStates.Flee;
+		}
+	}
 	
 	void Flee_Enter()
 	{
-		
+		//DEBUG
+		if (Selection.Contains(gameObject))
+		{
+			Debug.Log("Performing: Flee");
+		}
+		//=====
 	}
 
 	void Flee_Tick()
 	{
-		
+		var target = getElementIfExists(fov.visiblePredators, 0);
+		if (target != null)
+		{
+			agent.velocity = (transform.position - target.position).normalized * agent.speed;
+		}
+		else
+		{
+			currentState = PreyStates.Search;
+		}
 	}
 
 	void Flee_Exit()

@@ -177,8 +177,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 148177d5d40b7a7438a7ab439b0ea9ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  viewRadius: 10
-  viewAngle: 180
+  viewRadius: 5
+  viewAngle: 360
   preyMask:
     serializedVersion: 2
     m_Bits: 256
