@@ -45,6 +45,7 @@ public class UtilitySystem : MonoBehaviour
             if (Math.Abs(urgeProperties.utilityValue) < 0.001)
             {
                 urgeProperties.utilityValue = Random.Range(0, 0.1f);
+                urgeProperties.increaseSpeed = Random.Range(0.1f, 0.2f);
             }
         }
     }
