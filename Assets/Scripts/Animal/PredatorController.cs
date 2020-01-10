@@ -35,13 +35,16 @@ public class PredatorController : StateKitLite<PredatorStates> {
 		agent = GetComponent<NavMeshAgent>();
 		viewCamera = Camera.main;
 
-		utilitySystem.SubscribeOnUrgeExceedLimit((() =>
+		if (GameManager.Instance.deathEnabled)
 		{
-			if (gameObject != null)
+			utilitySystem.SubscribeOnUrgeExceedLimit((() =>
 			{
-				Die();
-			}
-		}));
+				if (gameObject != null)
+				{
+					Die();
+				}
+			}));	
+		}
 		
 		initialState = PredatorStates.Search;
 	}
@@ -215,6 +218,8 @@ public class PredatorController : StateKitLite<PredatorStates> {
 	
 	public void Die()
 	{
+		if (!GameManager.Instance.deathEnabled) return;
+
 		agent.isStopped = true;
 		transform.DOScale(Vector3.zero, 1).onComplete += () =>
 		{

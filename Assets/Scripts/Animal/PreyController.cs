@@ -36,14 +36,18 @@ public class PreyController : StateKitLite<PreyStates>
 		agent = GetComponent<NavMeshAgent>();
 		viewCamera = Camera.main;
 
-		utilitySystem.SubscribeOnUrgeExceedLimit((() =>
+		if (GameManager.Instance.deathEnabled)
 		{
-			if (gameObject != null)
+			utilitySystem.SubscribeOnUrgeExceedLimit((() =>
 			{
-				Die();
-			}
-		}));
-		
+			
+				if (gameObject != null)
+				{
+					Die();
+				}
+			}));
+		}
+
 		initialState = PreyStates.Search;
 	}
 
@@ -82,7 +86,9 @@ public class PreyController : StateKitLite<PreyStates>
 
 	public void Die()
 	{
-		agent.isStopped = true;
+		if (!GameManager.Instance.deathEnabled) return;
+
+			agent.isStopped = true;
 		transform.DOScale(Vector3.zero, 1).onComplete += () =>
 		{
 			Destroy(gameObject);
