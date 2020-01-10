@@ -307,13 +307,14 @@ public class PreyController : StateKitLite<PreyStates>
 
 	void FleeCheck()
 	{
-		var target = getElementIfExists(fov.visiblePredators, 0);
-		if (target != null)
+		fleeTarget = getElementIfExists(fov.visiblePredators, 0);
+		if (fleeTarget != null)
 		{
 			currentState = PreyStates.Flee;
 		}
 	}
-	
+
+	private Transform fleeTarget;
 	void Flee_Enter()
 	{
 		//DEBUG
@@ -330,13 +331,13 @@ public class PreyController : StateKitLite<PreyStates>
 
 	void Flee_Tick()
 	{
-		var target = getElementIfExists(fov.visiblePredators, 0);
-		if (target != null)
+		if (fov.visiblePredators.Contains(fleeTarget))
 		{
-			agent.velocity = (transform.position - target.position).normalized * agent.speed;
+			agent.velocity = (transform.position - fleeTarget.position).normalized * agent.speed;
 		}
 		else
 		{
+			fleeTarget = null;
 			currentState = PreyStates.Search;
 		}
 	}
