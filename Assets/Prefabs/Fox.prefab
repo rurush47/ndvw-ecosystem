@@ -637,7 +637,7 @@ MonoBehaviour:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 0
-      utilityValue: 0.1
+      utilityValue: 0
       urgeValue: 0
       increaseSpeed: 0.12
     - curve:
@@ -664,7 +664,7 @@ MonoBehaviour:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 0
-      utilityValue: 0.202
+      utilityValue: 0
       urgeValue: 0
       increaseSpeed: 0.08
 --- !u!114 &1167988046835675232

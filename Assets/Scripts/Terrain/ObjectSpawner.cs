@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using DG.Tweening;
 using TerrainGeneration;
 using UnityEngine;
+using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
 
 #if UNITY_EDITOR
@@ -23,9 +26,17 @@ public class ObjectSpawner : MonoBehaviour
 {
     public List<BiomeSpawnData> biomeSpawnData;
     [SerializeField] private Transform objectsParent;
+    [SerializeField] private List<TileData> tileData;
+    
+    [Header("Spawn plants")]
+    [SerializeField] private GameObject plantPrefab;
+    [SerializeField] private float plantSpawnOffset = 5;
+    [SerializeField] private LayerMask terrainLayer;
     
     public void SpawnObjects(List<TileData> tileData)
     {
+        this.tileData = tileData;
+        
         foreach (var data in tileData)
         {
             var bsd = biomeSpawnData.FirstOrDefault(d => d.biomeType == data.biome.type);
@@ -40,6 +51,58 @@ public class ObjectSpawner : MonoBehaviour
                 }
             }
         }
+    }
+
+    private void Start()
+    {
+        StartCoroutine(SpawnPlantsCoroutine());
+    }
+
+    IEnumerator SpawnPlantsCoroutine()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(plantSpawnOffset);
+            SpawnPlant();
+        }
+    }
+
+    public static int ToLayer ( int bitmask ) {
+        int result = bitmask>0 ? 0 : 31;
+        while( bitmask>1 ) {
+            bitmask = bitmask>>1;
+            result++;
+        }
+        return result;
+    }
+
+    public bool SpawnPlant()
+    {
+        var randomTile = tileData[Random.Range(0, tileData.Count)];
+
+        if (randomTile.biome.type == TerrainGenerator.BiomeType.Water)
+        {
+            return false;
+        }
+        
+        RaycastHit hit;
+        if (Physics.Raycast(randomTile.worldPos + new Vector3(0, 30, 0), transform.TransformDirection(Vector3.down), out hit, Mathf.Infinity))
+        {
+            //TODO shady layer number extraction
+            if (hit.transform.gameObject.layer == ToLayer(terrainLayer.value))
+            {
+                var newPlant = Instantiate(
+                    plantPrefab, 
+                    new Vector3(randomTile.worldPos.x, 0 , randomTile.worldPos.z),
+                    Quaternion.identity);
+                newPlant.transform.localScale = Vector3.zero;
+                newPlant.transform.DOScale(plantPrefab.transform.localScale, 1);
+
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public T GetRouletteSpinObj<T>(IDictionary<T, float> dict, float emptyValChance)
