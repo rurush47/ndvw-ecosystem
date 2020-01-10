@@ -47899,6 +47899,13 @@ MonoBehaviour:
       - 1
     emptyObjectChance: 90
   objectsParent: {fileID: 1607913895}
+  tileData: []
+  plantPrefab: {fileID: 1325783340230070723, guid: 14847b49460a74a4d9e804bfb9934470,
+    type: 3}
+  plantSpawnOffset: 5
+  terrainLayer:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!1 &2090466175
 GameObject:
   m_ObjectHideFlags: 0
