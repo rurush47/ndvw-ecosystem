@@ -42,7 +42,10 @@ public class UtilitySystem : MonoBehaviour
     {
         foreach (var urgeProperties in urgeCurveDict.Values)
         {
-            urgeProperties.utilityValue = Random.Range(0, 0.1f);
+            if (Math.Abs(urgeProperties.utilityValue) < 0.001)
+            {
+                urgeProperties.utilityValue = Random.Range(0, 0.1f);
+            }
         }
     }
 

@@ -165,7 +165,7 @@ MonoBehaviour:
         m_RotationOrder: 0
       utilityValue: 0
       urgeValue: 0
-      increaseSpeed: 0.09
+      increaseSpeed: 0.15
 --- !u!114 &8383069249098052214
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -216,8 +216,12 @@ MonoBehaviour:
   cam: {fileID: 0}
   agent: {fileID: 2253598168784469988}
   myRigidbody: {fileID: 2036946174519967864}
+  male: 0
+  minSpeed: 0.5
+  maxSpeed: 1.5
   utilitySystem: {fileID: 7233394729408271226}
   debugUi: {fileID: 7041798239649176490}
+  childPrefab: {fileID: 2511540664446372224}
   gotoDistance: 0
   gotoTimeout: 8
   searchTimeout: 5

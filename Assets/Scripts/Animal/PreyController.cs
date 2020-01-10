@@ -1,4 +1,6 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using DG.Tweening;
 using UnityEditor;
 using UnityEngine;
@@ -17,6 +19,24 @@ public class PreyController : AnimalController<PreyStates>
 	{
 		base.Start();
 		initialState = PreyStates.Search;
+	}
+	
+	//TODO can generalize
+	public Transform GetMatingPartner(List<Transform> list)
+	{
+		//Returns only other animal of opposite gender that wants to mate
+		var target = list.FirstOrDefault(t =>
+		{
+			if (t == null) return false;
+
+			var component = t.GetComponent<PreyController>();
+			return 
+				component != null &&
+				component.male != this.male && 
+				component.GetCurrentUrge() == Urge.Mating;
+		});
+
+		return target;
 	}
 	
 	#region StateMachine
@@ -74,7 +94,7 @@ public class PreyController : AnimalController<PreyStates>
 				}
 				break;
 			case Urge.Mating:
-				if (fov.visiblePreys.Count > 0)
+				if (GetMatingPartner(fov.visiblePreys) != null)
 				{
 					currentState = PreyStates.Goto;
 				}
@@ -112,16 +132,15 @@ public class PreyController : AnimalController<PreyStates>
 		switch (currentUrge)
 		{
 			case Urge.Hunger:
-				target = getElementIfExists(fov.visiblePreyFoods, 0);
+				target = GetElementIfExists(fov.visiblePreyFoods, 0);
 				break;
 			
 			case Urge.Mating:
-				//TODO - should check if another wolf wants to mate!!!
-				target = getElementIfExists(fov.visiblePreys, 0);
+				target = GetMatingPartner(fov.visiblePreys);
 				break;
 			
 			case Urge.Thirst:
-				target = getElementIfExists(fov.visibleWaterPoints, 0);
+				target = GetElementIfExists(fov.visibleWaterPoints, 0);
 				break;
 		}
 
@@ -165,15 +184,29 @@ public class PreyController : AnimalController<PreyStates>
 		{
 			case Urge.Hunger:
 				gotoTarget.GetComponent<Plant>().Die();
+				DOVirtual.DelayedCall(3, () =>
+				{
+					currentState = PreyStates.Search; 
+				});
+				break;
+			case Urge.Mating:
+				//TIME OUT SEARCH FOR NEW URGE
+				DOVirtual
+					.DelayedCall(3, () => { currentState = PreyStates.Search; })
+					.OnComplete(() =>
+					{
+						if(male) return;
+						
+						var child = Instantiate(childPrefab, transform.position + new Vector3(1, 0, 1), Quaternion.identity);
+						child.transform.localScale = Vector3.zero;
+						child.transform.DOScale(Vector3.one, 1);
+					});
+				break;
+			default:
+				//TIME OUT SEARCH FOR NEW URGE
+				DOVirtual.DelayedCall(3, () => { currentState = PreyStates.Search; });
 				break;
 		}
-		//
-		
-		//TIME OUT SEARCH FOR NEW URGE
-		DOVirtual.DelayedCall(3, () =>
-		{
-			currentState = PreyStates.Search; 
-		});
 	}
 	void DoAction_Tick() {}
 
@@ -184,7 +217,7 @@ public class PreyController : AnimalController<PreyStates>
 
 	void FleeCheck()
 	{
-		fleeTarget = getElementIfExists(fov.visiblePredators, 0);
+		fleeTarget = GetElementIfExists(fov.visiblePredators, 0);
 		if (fleeTarget != null)
 		{
 			currentState = PreyStates.Flee;
@@ -208,7 +241,7 @@ public class PreyController : AnimalController<PreyStates>
 
 	void Flee_Tick()
 	{
-		if (fov.visiblePredators.Contains(fleeTarget))
+		if (fov.visiblePredators.Contains(fleeTarget) && fleeTarget != null)
 		{
 			agent.velocity = (transform.position - fleeTarget.position).normalized * agent.speed;
 		}

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using DG.Tweening;
 using Prime31.StateKitLite;
 using UnityEngine;
@@ -18,9 +19,15 @@ public class AnimalController<TEnum> : StateKitLite<TEnum> where TEnum : struct,
 	protected Camera viewCamera;
 	protected Vector3 velocity;
 
+	[Header("Variables")] 
+	public bool male;
+	[SerializeField] private float minSpeed = 0.5f;
+	[SerializeField] private float maxSpeed = 1.5f;
+
 	[Header("Refs:")] 
 	[SerializeField] protected UtilitySystem utilitySystem;
 	[SerializeField] protected DebugUI debugUi;
+	[SerializeField] protected GameObject childPrefab;
 
 	protected void Start () {
 		
@@ -40,6 +47,19 @@ public class AnimalController<TEnum> : StateKitLite<TEnum> where TEnum : struct,
 				}
 			}));
 		}
+
+		agent.speed = Random.Range(minSpeed, maxSpeed);
+		male = (Random.value > 0.5f);
+	}
+
+	public TEnum GetCurrentState()
+	{
+		return currentState;
+	}
+
+	public Urge GetCurrentUrge()
+	{
+		return currentUrge;
 	}
 
 	public Vector3 RandomNavmeshLocation(float radius) {
@@ -90,7 +110,7 @@ public class AnimalController<TEnum> : StateKitLite<TEnum> where TEnum : struct,
 //		myRigidbody.MovePosition (myRigidbody.position + velocity * Time.fixedDeltaTime);
 //	}
 	
-	public Transform getElementIfExists(List<Transform> list, int index)
+	public Transform GetElementIfExists(List<Transform> list, int index)
 	{
 		if (list.Count >= index + 1)
 		{

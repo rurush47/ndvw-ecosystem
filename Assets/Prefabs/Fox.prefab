@@ -551,7 +551,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   viewRadius: 10
-  viewAngle: 120
+  viewAngle: 207
   preyMask:
     serializedVersion: 2
     m_Bits: 256
@@ -664,9 +664,9 @@ MonoBehaviour:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 0
-      utilityValue: 0
+      utilityValue: 0.202
       urgeValue: 0
-      increaseSpeed: 0.11
+      increaseSpeed: 0.08
 --- !u!114 &1167988046835675232
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -684,8 +684,12 @@ MonoBehaviour:
   cam: {fileID: 0}
   agent: {fileID: 1590190721532614645}
   myRigidbody: {fileID: -8488915564828642829}
+  male: 0
+  minSpeed: 0.5
+  maxSpeed: 1.5
   utilitySystem: {fileID: 8371190743117229301}
   debugUi: {fileID: 39792741696140297}
+  childPrefab: {fileID: 7521296707469367995}
   gotoDistance: 1.5
   gotoTimeout: 10
   searchTimeout: 5

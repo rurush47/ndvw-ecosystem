@@ -1,4 +1,6 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using DG.Tweening;
 using UnityEditor;
 using UnityEngine;
@@ -16,6 +18,23 @@ public class PredatorController : AnimalController<PredatorStates>
 	{
 		base.Start();
 		initialState = PredatorStates.Search;
+	}
+
+	//TODO can generalize
+	public Transform GetMatingPartner(List<Transform> list)
+	{
+		//Returns only other animal of opposite gender that wants to mate
+		var target = list.FirstOrDefault(t =>
+		{
+			if (t == null) return false;
+			var component = t.GetComponent<PredatorController>();
+			return 
+				component != null &&
+				component.male != this.male &&
+				component.GetCurrentUrge() == Urge.Mating;
+		});
+
+		return target;
 	}
 	
 	#region StateMachine
@@ -71,7 +90,7 @@ public class PredatorController : AnimalController<PredatorStates>
 				}
 				break;
 			case Urge.Mating:
-				if (fov.visiblePredators.Count > 0)
+				if (GetMatingPartner(fov.visiblePredators) != null)
 				{
 					currentState = PredatorStates.Goto;
 				}
@@ -107,16 +126,15 @@ public class PredatorController : AnimalController<PredatorStates>
 		switch (currentUrge)
 		{
 			case Urge.Hunger:
-				target = getElementIfExists(fov.visiblePreyFoods, 0);
+				target = GetElementIfExists(fov.visiblePreyFoods, 0);
 				break;
 			
 			case Urge.Mating:
-				//TODO - should check if another wolf wants to mate!!!
-				target = getElementIfExists(fov.visiblePredators, 0);
+				target = GetMatingPartner(fov.visiblePredators);
 				break;
 			
 			case Urge.Thirst:
-				target = getElementIfExists(fov.visibleWaterPoints, 0);
+				target = GetElementIfExists(fov.visibleWaterPoints, 0);
 				break;
 		}
 
@@ -171,15 +189,34 @@ public class PredatorController : AnimalController<PredatorStates>
 		{
 			case Urge.Hunger:
 				gotoTarget.GetComponent<PreyController>().Die();
+				//TIME OUT SEARCH FOR NEW URGE
+				DOVirtual.DelayedCall(3, () =>
+				{
+					currentState = PredatorStates.Search; 
+				});
+				break;
+			case Urge.Mating:
+				//TIME OUT SEARCH FOR NEW URGE
+				DOVirtual
+					.DelayedCall(3, () => { currentState = PredatorStates.Search; })
+					.OnComplete(() =>
+					{
+						if(male) return;
+						
+						var child = Instantiate(childPrefab, transform.position + new Vector3(1, 0, 1), Quaternion.identity);
+						child.transform.localScale = Vector3.zero;
+						child.transform.DOScale(Vector3.one, 1);
+					});
+				break;
+			default:
+				//TIME OUT SEARCH FOR NEW URGE
+				DOVirtual.DelayedCall(3, () =>
+				{
+					currentState = PredatorStates.Search; 
+				});
 				break;
 		}
 		//
-		
-		//TIME OUT SEARCH FOR NEW URGE
-		DOVirtual.DelayedCall(3, () =>
-		{
-			currentState = PredatorStates.Search; 
-		});
 	}
 	void DoAction_Tick() {}
 
