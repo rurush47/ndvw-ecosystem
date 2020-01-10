@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TerrainGeneration;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -17,9 +18,17 @@ public class GameManager : MonoBehaviour
         } else {
             _instance = this;
         }
+        
+        Init();
     }
 
     #endregion
 
+    public static TerrainGenerator TerrainGenerator;
     public bool deathEnabled;
+
+    void Init()
+    {
+        TerrainGenerator = FindObjectOfType<TerrainGenerator>();
+    }
 }

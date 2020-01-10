@@ -56,6 +56,7 @@ public class ObjectSpawner : MonoBehaviour
     private void Start()
     {
         StartCoroutine(SpawnPlantsCoroutine());
+        tileData = GameManager.TerrainGenerator.GetAllTileData();
     }
 
     IEnumerator SpawnPlantsCoroutine()
