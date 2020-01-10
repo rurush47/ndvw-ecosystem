@@ -200,7 +200,8 @@ public class PreyController : AnimalController<PreyStates>
 						var child = Instantiate(childPrefab, transform.position + new Vector3(1, 0, 1), Quaternion.identity);
 						child.tag = "Bunny";
 						child.transform.localScale = Vector3.zero;
-						child.transform.DOScale(Vector3.one, 1);
+						child.transform.DOScale(childPrefab.transform.localScale, 1);
+
 					});
 				break;
 			default:
