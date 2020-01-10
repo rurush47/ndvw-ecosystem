@@ -204,6 +204,7 @@ public class PredatorController : AnimalController<PredatorStates>
 						if(male) return;
 						
 						var child = Instantiate(childPrefab, transform.position + new Vector3(1, 0, 1), Quaternion.identity);
+						child.tag = "Fox";
 						child.transform.localScale = Vector3.zero;
 						child.transform.DOScale(Vector3.one, 1);
 					});
