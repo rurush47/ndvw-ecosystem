@@ -46,7 +46,6 @@ GameObject:
   - component: {fileID: 2253598168784469988}
   - component: {fileID: 2036946174519967864}
   - component: {fileID: 1300491498}
-  - component: {fileID: 1634526789}
   m_Layer: 8
   m_Name: Bunny
   m_TagString: Bunny
@@ -283,21 +282,6 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.16
   m_Center: {x: 0, y: 0.09, z: 0}
---- !u!114 &1634526789
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2511540664446372224}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 92e9fb01e426d6244945e90d1c9249dc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  urgeCurveDict:
-    m_keys: 
-    m_values: []
 --- !u!1 &3984827174484013793
 GameObject:
   m_ObjectHideFlags: 0
@@ -699,7 +683,7 @@ GameObject:
   - component: {fileID: 7309037467734043547}
   m_Layer: 8
   m_Name: Bunny
-  m_TagString: Untagged
+  m_TagString: Bunny
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

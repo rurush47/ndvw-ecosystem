@@ -1,0 +1,14 @@
+﻿namespace MalbersAnimations.Utilities
+{
+    public class BlinkEyes : UnityEngine.MonoBehaviour, IAnimatorListener
+    {
+        public UnityEngine.Animator animator;
+        public string parameter;
+
+        /// <summary>This method is called by animation clips events, this will open an close the animal eyes</summary>
+        public virtual void Eyes(int ID)  { animator?.SetInteger(parameter, ID); }
+
+        public virtual void OnAnimatorBehaviourMessage(string message, object value)
+        { this.InvokeWithParams(message, value); }
+    }
+}
