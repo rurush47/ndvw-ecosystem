@@ -51689,10 +51689,6 @@ PrefabInstance:
       propertyPath: cam
       value: 
       objectReference: {fileID: 1846440686}
-    - target: {fileID: 99071694, guid: c737dd230724d61469e1c672cf47ed9e, type: 3}
-      propertyPath: debugUi
-      value: 
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c737dd230724d61469e1c672cf47ed9e, type: 3}
 --- !u!1001 &4713863380374196018
@@ -52032,7 +52028,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4417229628137580, guid: a578de702f2191b4fa9cdcec1ad493c5, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.3000002
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4417229628137580, guid: a578de702f2191b4fa9cdcec1ad493c5, type: 3}
       propertyPath: m_LocalPosition.z
@@ -52070,5 +52066,15 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8856433587386508297, guid: a578de702f2191b4fa9cdcec1ad493c5,
+        type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 1846440686}
+    - target: {fileID: 8310519117109132784, guid: a578de702f2191b4fa9cdcec1ad493c5,
+        type: 3}
+      propertyPath: cam
+      value: 
+      objectReference: {fileID: 1846440686}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a578de702f2191b4fa9cdcec1ad493c5, type: 3}
