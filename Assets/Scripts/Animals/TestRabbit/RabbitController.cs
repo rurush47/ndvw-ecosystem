@@ -6,13 +6,13 @@ using DG.Tweening;
 using UnityEditor;
 using UnityEngine;
 
-// public enum PreyStates
-// {
-// 	Search,
-// 	Goto,
-// 	DoAction,
-// 	Flee
-// }
+ public enum PreyStates
+ {
+ 	Search,
+ 	Goto,
+ 	DoAction,
+ 	Flee
+ }
 
 public class RabbitController : AnimalController<PreyStates>
 {
