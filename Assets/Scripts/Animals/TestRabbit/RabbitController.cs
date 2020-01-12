@@ -181,6 +181,7 @@ public class RabbitController : AnimalController<PreyStates>
 	{
 		gotoTimeoutTween.Kill();
 		agent.isStopped = true;
+		agent.velocity = Vector3.zero;
 	}
 
 	void DoAction_Enter()
