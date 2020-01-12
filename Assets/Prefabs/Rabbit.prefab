@@ -11,6 +11,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Rabbit
       objectReference: {fileID: 0}
+    - target: {fileID: 1588090451174212, guid: c737dd230724d61469e1c672cf47ed9e, type: 3}
+      propertyPath: m_TagString
+      value: Bunny
+      objectReference: {fileID: 0}
     - target: {fileID: 4677745771901032, guid: c737dd230724d61469e1c672cf47ed9e, type: 3}
       propertyPath: m_LocalPosition.x
       value: 8.9
@@ -54,6 +58,10 @@ PrefabInstance:
     - target: {fileID: 4677745771901032, guid: c737dd230724d61469e1c672cf47ed9e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 99071694, guid: c737dd230724d61469e1c672cf47ed9e, type: 3}
+      propertyPath: urgeDistanceDict.m_values.Array.data[1]
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 99071695, guid: c737dd230724d61469e1c672cf47ed9e, type: 3}
       propertyPath: urgeCurveDict.m_values.Array.data[1].increaseSpeed

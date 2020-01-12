@@ -197,6 +197,7 @@ public class WolfController : AnimalController<PredatorStates>
 	{
 		gotoTimeoutTween.Kill();
 		agent.isStopped = true;
+		agent.velocity = Vector3.zero;
 	}
 
 	void DoAction_Enter()
