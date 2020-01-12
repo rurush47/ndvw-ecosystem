@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using DefaultNamespace;
 using DG.Tweening;
 using UnityEditor;
 using UnityEngine;
@@ -211,13 +212,7 @@ public class RabbitController : AnimalController<PreyStates>
 					.DelayedCall(3, () => { currentState = PreyStates.Search; })
 					.OnComplete(() =>
 					{
-						if(male) return;
-						
-						var child = Instantiate(childPrefab, transform.position + new Vector3(1, 0, 1), Quaternion.identity);
-						child.tag = "Bunny";
-						child.transform.localScale = Vector3.zero;
-						child.transform.DOScale(childPrefab.transform.localScale, 1);
-
+						spawnChildAnimal();
 					});
 				break;
 			default:
@@ -276,4 +271,23 @@ public class RabbitController : AnimalController<PreyStates>
 	}
 	
 	#endregion
+	
+	private void spawnChildAnimal()
+	{
+		if(male) return;
+
+		var father = gotoTarget.GetComponent<RabbitController>();
+		var childGenotype = Genetics.MultipleCrossover(father.genotype, genotype);
+		childGenotype = Genetics.Mutation(childGenotype);
+		
+		var child = Instantiate(childPrefab, transform.position + new Vector3(1, 0, 1), Quaternion.identity);
+		child.tag = "Bunny";
+		child.transform.localScale = Vector3.zero;
+		child.transform.DOScale(childPrefab.transform.localScale, 1);
+		
+		var childController = child.GetComponent<RabbitController>();
+		childController.SetNewGenotype(childGenotype);
+		childController.DecodeGenotype();
+
+	}
 }

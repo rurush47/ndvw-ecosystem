@@ -10,7 +10,7 @@ namespace DefaultNamespace
     public class Genetics
     {
         private static int genotypeLength = Genotype.genotypeLength;
-        public static float mutationChance = 0.05f;
+        public static float mutationProbability = 0.05f;
         public static int crossoverSiteNumber = 8;
         public static int maxNumberOfMutations = 4;
 
@@ -79,7 +79,7 @@ namespace DefaultNamespace
             StringBuilder sb = new StringBuilder(g.Sequence);
             foreach (var i in possibleMutationSites)
             {
-                if (r.NextDouble() < mutationChance)
+                if (r.NextDouble() < mutationProbability)
                 {
                     sb[i] = g.Sequence[i] != '0' ? '0' : '1';
                 }
