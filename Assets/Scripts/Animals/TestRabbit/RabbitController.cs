@@ -181,11 +181,13 @@ public class RabbitController : AnimalController<PreyStates>
 	{
 		gotoTimeoutTween.Kill();
 		agent.isStopped = true;
-		rabbitAnimator.SetBool("walking", false);
 	}
 
 	void DoAction_Enter()
 	{
+		//stop moving animation
+		rabbitAnimator.SetBool("walking", false);
+
 		//DEBUG
 		string text = "Performing: " + currentUrge;
 		if (Selection.Contains(gameObject))
@@ -245,6 +247,7 @@ public class RabbitController : AnimalController<PreyStates>
 	private Transform fleeTarget;
 	void Flee_Enter()
 	{
+		currentFleeTime = 0;
 		//DEBUG
 		//DEBUG
 		string text = "Performing: Flee ";
@@ -257,16 +260,29 @@ public class RabbitController : AnimalController<PreyStates>
 		//=====
 	}
 
+	[SerializeField] private float minFleeTime = 3;
+	private float currentFleeTime = 0;
+	private Vector3 lastFleeTargetPosition;
 	void Flee_Tick()
 	{
+		currentFleeTime += Time.deltaTime;
+		
 		if (fov.visiblePredators.Contains(fleeTarget) && fleeTarget != null)
 		{
+			lastFleeTargetPosition = fleeTarget.position; 
 			agent.velocity = (transform.position - fleeTarget.position).normalized * agent.speed;
 		}
 		else
 		{
-			fleeTarget = null;
-			currentState = PreyStates.Search;
+			if (currentFleeTime < minFleeTime)
+			{
+				agent.velocity = (transform.position - lastFleeTargetPosition).normalized * agent.speed;
+			}
+			else
+			{
+				fleeTarget = null;
+				currentState = PreyStates.Search;	
+			}
 		}
 	}
 

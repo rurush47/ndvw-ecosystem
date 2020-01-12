@@ -7,8 +7,7 @@ public class Billboard : MonoBehaviour
 {
     void Update()
     {
-        
-//        transform.LookAt(Camera.main.transform);       
-        transform.LookAt(SceneView.GetAllSceneCameras()[0].transform);       
+        transform.LookAt(Camera.main.transform);       
+        //transform.LookAt(SceneView.GetAllSceneCameras()[0].transform);       
     }
 }
