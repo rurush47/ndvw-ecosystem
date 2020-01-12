@@ -16,7 +16,7 @@ namespace MalbersAnimations.Controller
         {
             animal = animator.GetComponent<MAnimal>();
 
-            if (animal.IntID == Int_ID.Loop) return; //Means is Looping
+            if (animal == null || animal.IntID == Int_ID.Loop) return; //Means is Looping
 
             if (ModeID == null) Debug.LogError("Mode behaviour needs an ID");
 
@@ -28,7 +28,7 @@ namespace MalbersAnimations.Controller
 
         override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
         {
-            if (animal.IntID == Int_ID.Loop) return;                //Means is Looping So Skip the Exit Mode
+            if (animal == null || animal.IntID == Int_ID.Loop) return;                //Means is Looping So Skip the Exit Mode
 
             if (ExitMode)
                 modeOwner?.AnimationTagExit();

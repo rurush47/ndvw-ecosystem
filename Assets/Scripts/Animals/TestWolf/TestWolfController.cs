@@ -15,18 +15,15 @@ using UnityEngine;
 public class TestWolfController : AnimalController<PredatorStates> 
 {
 	// NEW //////////////////
-	private Animator WolfAnimator;
+	private Animator wolfAnimator;
 
-	private new void Start()
+	private void Start()
 	{
 		base.Start();
+		wolfAnimator = GetComponent<Animator>();
 		initialState = PredatorStates.Search;
-
-		// NEW //////////////////
-		WolfAnimator = GetComponent<Animator>();
-
 	}
-
+	
 	//TODO can generalize
 	public Transform GetMatingPartner(List<Transform> list)
 	{
@@ -43,7 +40,21 @@ public class TestWolfController : AnimalController<PredatorStates>
 
 		return target;
 	}
+
+	void Update()
+	{
+		base.Update();
+		wolfAnimator.SetFloat("Vertical", agent.velocity.magnitude);
+	}
 	
+	//HACK
+	IEnumerator SetModeOneFrame(string state, int val)
+	{
+		wolfAnimator.SetInteger(state, val);
+		yield return new WaitForSeconds(0.1f);
+		wolfAnimator.SetInteger(state, 0);
+	}
+
 	#region StateMachine
 	
 	// NEW //////////////////
@@ -63,11 +74,16 @@ public class TestWolfController : AnimalController<PredatorStates>
 		{
 			walking = true;
 		}
-		WolfAnimator.SetBool("walking",walking);
+		wolfAnimator.SetBool("walking",walking);
 	}
 
+	
 	void Search_Enter()
 	{
+		//animation
+		wolfAnimator.SetInteger("State", 1);
+		//=========
+		
 		currentUrge = utilitySystem.GetUrgeWithHighestVal();
 
 		agent.isStopped = false;
@@ -187,6 +203,9 @@ public class TestWolfController : AnimalController<PredatorStates>
 	{
 		if (!GameManager.Instance.deathEnabled) return;
 
+		//Death animation
+		wolfAnimator.SetInteger("State", 10);
+
 		agent.isStopped = true;
 		transform.DOScale(Vector3.zero, 1).onComplete += () =>
 		{
@@ -214,8 +233,21 @@ public class TestWolfController : AnimalController<PredatorStates>
 		//TODO perform action here (animate etc)
 		switch (currentUrge)
 		{
+			case Urge.Thirst:
+				//Drinking animation
+				StartCoroutine(SetModeOneFrame("Mode", 4007));
+				//TIME OUT SEARCH FOR NEW URGE
+				DOVirtual.DelayedCall(3, () =>
+				{
+					currentState = PredatorStates.Search; 
+				});
+				break;
 			case Urge.Hunger:
 				gotoTarget.GetComponent<PreyController>().Die();
+				
+				//DEATH ANIMATION
+				StartCoroutine(SetModeOneFrame("Mode", 4001));
+
 				//TIME OUT SEARCH FOR NEW URGE
 				DOVirtual.DelayedCall(3, () =>
 				{
@@ -223,6 +255,8 @@ public class TestWolfController : AnimalController<PredatorStates>
 				});
 				break;
 			case Urge.Mating:
+				//Mating animation
+				StartCoroutine(SetModeOneFrame("Mode", 4020));
 				//TIME OUT SEARCH FOR NEW URGE
 				DOVirtual
 					.DelayedCall(3, () => { currentState = PredatorStates.Search; })
